@@ -6,18 +6,27 @@ def generate(length, seed):
 
     lines = []
 
-    for i in range(length):
-        left = "|"
-        spaces = " " * i
+    max_width = length * 2
 
-        # right wall 'leans' inward
-        # occaisional jitter for imperfection
-        if rng.random() < 0.1:
-            right ="/"
-        else:
-            right = "\\"
+    for i in range(length):
+        depth = i / length
+        inner_width = int((1 - depth) * max_width)
+
+        if inner_width < 1:
+            inner_width = 1
         
-        lines.append(left + spaces + right)
+        left_pad = " " * (i // 2)
+
+        wall_left = "|"
+        wall_right = "\\" if rng.random() < 0.05 else "/"
+
+        if inner_width < 2:
+            middle = ""
+        else:
+            middle = " " * inner_width
+        
+        line = left_pad + wall_left + middle + wall_right
+        lines.append(line)
 
     return "\n".join(lines)
 
